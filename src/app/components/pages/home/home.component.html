@@ -1,0 +1,13 @@
+<section (window:scroll)="doSomethingOnWindowScroll($event)">
+    <div class="row">
+        <div *ngFor='let pokemon of pokemonShortData' class="col-2 my-3 p-1">            
+                <div class="card w-100">
+                        <img *ngIf='pokemon.data' class="card-img-top" src="{{pokemon.data.sprites.front_default}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ pokemon.name }}</h5>
+                        <a href="#" class="btn btn-primary btn-block">Ver</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+</section>
