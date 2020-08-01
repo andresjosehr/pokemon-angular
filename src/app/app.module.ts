@@ -7,14 +7,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './components/pages/home/home.component';
 import { HeaderComponent } from './components/general/header/header.component';
 import { HttpClientModule } from "@angular/common/http";
-import { HttpApiComponent } from './practices/http/http-api/http-api.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    HeaderComponent,
-    HttpApiComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

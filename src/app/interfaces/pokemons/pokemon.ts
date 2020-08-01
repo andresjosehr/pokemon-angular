@@ -1,6 +1,8 @@
+import { Observable } from 'rxjs';
+
 export interface PokemonList {
     count: number,
-    next: string,
+    next: string | null,
     previus: string | null 
     results: PokemonShortData[]
 }
@@ -8,7 +10,7 @@ export interface PokemonList {
 export interface PokemonShortData{
     name: string,
     url: string,
-    data? : PokemonData
+    front_default? : Observable<any>
 }
 
 export interface PokemonData{
