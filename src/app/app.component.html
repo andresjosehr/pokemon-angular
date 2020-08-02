@@ -1,7 +1,7 @@
+<app-header></app-header>
 <main style='background: #0a192f;min-height: 100vh;' class="pt-5">
   <div class="container">
-    <app-header></app-header>
-    <app-home></app-home>
+    <router-outlet></router-outlet>
   </div>
   <div class="general-loader">
     <div *ngIf='isLoading' class="spinner-border text-light" role="status">

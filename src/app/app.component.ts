@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpInterceptorService } from './services/http-interceptor/http-interceptor.service';
 import { HttpInterceptorStateService } from './services/http-interceptor/http-interceptor-state.service';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,6 @@ export class AppComponent implements OnInit {
   ){}
 
   ngOnInit(): void{
-    this.httpStateService.state.subscribe(res => this.isLoading= res.state==1 ? false: true)
+    this.httpStateService.state.pipe(startWith({state: 0})).subscribe(res => this.isLoading= res.state==1 ? false: true)
   }
 }

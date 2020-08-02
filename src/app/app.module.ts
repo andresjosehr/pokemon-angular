@@ -9,12 +9,14 @@ import { HeaderComponent } from './components/general/header/header.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HttpInterceptorService } from './services/http-interceptor/http-interceptor.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PokemonDetailsComponent } from './components/pages/pokemon-details/pokemon-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    PokemonDetailsComponent
   ],
   imports: [
     BrowserModule,

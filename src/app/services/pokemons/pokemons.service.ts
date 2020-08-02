@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment"
 import { PokemonList, PokemonData, PokemonShortData } from "../../interfaces/pokemons/pokemon"
 import { HttpClient } from "@angular/common/http"
-import { map, mapTo, pluck, mergeMap } from 'rxjs/operators'
-import { Observable, from } from 'rxjs';
+import { map, pluck, mergeMap, filter, distinct, switchMap, refCount, publishReplay } from 'rxjs/operators'
+import { Observable, from, merge, fromEvent } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +11,36 @@ import { Observable, from } from 'rxjs';
 export class PokemonsService {
 
   public request: any;
-  public pokemonList
+  public pokemonList: PokemonShortData[] = [];
+  public isLoading: boolean = false
+  public numberOfLoadedPokemons: number = 0;
+  public numberOfPokemonsToLoad: number = 35;
+  loadItems$: any;
 
   constructor(
     private httpClient: HttpClient
     ) { }
 
+  pokemonListOnInit(){
+
+    const pageScroll$ = fromEvent(window, "scroll").pipe(
+      
+      map(() => window.scrollY),                                                                          // && !this.searchInput.value 
+      filter((current) => current >= (document.body.clientHeight - window.innerHeight) && !this.isLoading),
+      distinct(),
+      switchMap(() => this.getPokemons(this.numberOfLoadedPokemons, this.numberOfPokemonsToLoad))
+
+    )
+    
+    merge(this.getPokemons(this.numberOfLoadedPokemons, this.numberOfPokemonsToLoad), pageScroll$).pipe(
+      
+    )
+      .subscribe((resp: any) => {
+      this.numberOfLoadedPokemons++
+      this.pokemonList.push(resp)
+    })
+
+  }
 
   getPokemons(offset: number, limit: number): Observable<any> {
     return this.httpClient.get<PokemonList>(`${environment.pokemonAPI}pokemon?offset=${offset}&limit=${limit}`).pipe(
@@ -47,7 +71,8 @@ export class PokemonsService {
 
   searchPokemon(): Observable<PokemonShortData[]> {
     return this.httpClient.get<PokemonData>(`${environment.pokemonAPI}pokemon?&limit=1000`).pipe(
-      pluck("results")
+      pluck("results"),
+      
     )
   }
 
