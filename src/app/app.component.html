@@ -1,6 +1,11 @@
-<main style='background: #0a192f;'>
+<main style='background: #0a192f;min-height: 100vh;' class="pt-5">
   <div class="container">
     <app-header></app-header>
     <app-home></app-home>
+  </div>
+  <div class="general-loader">
+    <div *ngIf='isLoading' class="spinner-border text-light" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
 </main>

@@ -3,7 +3,7 @@ import { environment } from "../../../environments/environment"
 import { PokemonList, PokemonData, PokemonShortData } from "../../interfaces/pokemons/pokemon"
 import { HttpClient } from "@angular/common/http"
 import { map, mapTo, pluck, mergeMap } from 'rxjs/operators'
-import { Observable, fromEvent, merge, from } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,16 +24,7 @@ export class PokemonsService {
       mergeMap((pokemonList: PokemonShortData[]) => {
         return from(pokemonList).pipe(
           mergeMap((pokemonShortData: PokemonShortData) => {
-            return this.getPokemonImages(pokemonShortData.url).pipe(
-              pluck("front_default"),
-              map((pokemon: string)=>{
-                return {
-                  name: pokemonShortData.name,
-                  url: pokemonShortData.url,
-                  front_default: pokemon
-                }
-              })
-            )
+            return this.getPokemonImages(pokemonShortData)
           }),
           
         )
@@ -41,22 +32,24 @@ export class PokemonsService {
     )
   }
 
-  getPokemonImages(pokemonURL: string): Observable<any> {
-    return this.httpClient.get<PokemonData>(`${pokemonURL}`).pipe(pluck("sprites"))
+  getPokemonImages(pokemonShortData: PokemonShortData): Observable<any> {
+    return this.httpClient.get<PokemonData>(`${pokemonShortData.url}`).pipe(
+      pluck("sprites", "front_default"),
+      map((pokemon: string)=>{
+        return {
+          name: pokemonShortData.name,
+          url: pokemonShortData.url,
+          front_default: pokemon
+        }
+      })
+    )
   }
 
-  getAnyData(url): Promise<any> {
-    return this.request = this.httpClient.get<PokemonData>(`${url}`)
-      .toPromise().then((result: any) =>{
-        return result;
-    })
+  searchPokemon(): Observable<PokemonShortData[]> {
+    return this.httpClient.get<PokemonData>(`${environment.pokemonAPI}pokemon?&limit=1000`).pipe(
+      pluck("results")
+    )
   }
 
-  getMorePokemons(url): Promise<any> {
-    return this.request = this.httpClient.get<PokemonData>(`${url}`)
-      .toPromise().then((result: any) =>{
-        return result;
-    })
-  }
 
 }
