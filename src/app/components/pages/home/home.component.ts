@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if(!pokemonName){
           return this.pokemonsService.getPokemons(this.pokemonsService.numberOfLoadedPokemons=0, this.pokemonsService.numberOfPokemonsToLoad=70) 
         }
-        return from(pokemonName).pipe(
+        return from([pokemonName]).pipe(
           switchMap(resp=> {
             return this.pokemonsService.searchPokemon()
           }),
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           })
         )
       })
-    )
+    ).subscribe(val => this.pokemonsService.pokemonList.push(val))
 
 
 
