@@ -1,0 +1,24 @@
+.banner 
+    height: 80vh
+    display: table
+
+    .banner-container 
+        display: table-cell
+        vertical-align: middle
+
+        .pokemon-name-div:before, .pokemon-name-div:after
+            content: " "
+            height: 4px
+            width: 100px
+            background: white
+            right: 0
+            margin: auto
+            margin-top: 13px
+            position: absolute
+            border-radius: 10px
+
+        .pokemon-name-div:before
+            left: -180px
+
+        .pokemon-name-div:after
+            left: 180px

@@ -8,9 +8,10 @@ export interface PokemonList {
 }
 
 export interface PokemonShortData{
+    id? : number,
     name: string,
     url: string,
-    front_default? : Observable<any>
+    front_default? : string
 }
 
 export interface PokemonData{

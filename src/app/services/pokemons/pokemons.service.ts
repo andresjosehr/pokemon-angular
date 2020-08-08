@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment"
 import { PokemonList, PokemonData, PokemonShortData } from "../../interfaces/pokemons/pokemon"
 import { HttpClient } from "@angular/common/http"
-import { map, pluck, mergeMap, filter, distinct, switchMap, refCount, publishReplay } from 'rxjs/operators'
+import { map, pluck, mergeMap, filter, distinct, switchMap, refCount, publishReplay, tap, toArray, share } from 'rxjs/operators'
 import { Observable, from, merge, fromEvent } from 'rxjs';
 
 @Injectable({
@@ -10,36 +10,35 @@ import { Observable, from, merge, fromEvent } from 'rxjs';
 })
 export class PokemonsService {
 
-  public request: any;
+  // public request: any;
   public pokemonList: PokemonShortData[] = [];
   public isLoading: boolean = false
   public numberOfLoadedPokemons: number = 0;
   public numberOfPokemonsToLoad: number = 35;
-  loadItems$: any;
+  // loadItems$: any;
 
   constructor(
     private httpClient: HttpClient
     ) { }
 
-  pokemonListOnInit(){
+
+  scrollEvent(){
+    
+  }
+
+  pokemonListOnInit(): Observable<any>{
 
     const pageScroll$ = fromEvent(window, "scroll").pipe(
       
       map(() => window.scrollY),                                                                          // && !this.searchInput.value 
       filter((current) => current >= (document.body.clientHeight - window.innerHeight) && !this.isLoading),
       distinct(),
-      switchMap(() => this.getPokemons(this.numberOfLoadedPokemons, this.numberOfPokemonsToLoad))
+      switchMap(() => this.getPokemons(this.numberOfLoadedPokemons+=35, this.numberOfPokemonsToLoad+=35))
 
     )
     
-    merge(this.getPokemons(this.numberOfLoadedPokemons, this.numberOfPokemonsToLoad), pageScroll$).pipe(
-      
-    )
-      .subscribe((resp: any) => {
-      this.numberOfLoadedPokemons++
-      this.pokemonList.push(resp)
-    })
-
+    return merge(this.getPokemons(this.numberOfLoadedPokemons, this.numberOfPokemonsToLoad), pageScroll$)
+    
   }
 
   getPokemons(offset: number, limit: number): Observable<any> {
@@ -48,22 +47,22 @@ export class PokemonsService {
       mergeMap((pokemonList: PokemonShortData[]) => {
         return from(pokemonList).pipe(
           mergeMap((pokemonShortData: PokemonShortData) => {
-            return this.getPokemonImages(pokemonShortData)
-          }),
-          
+            return this.getPokemonImagesAndID(pokemonShortData)
+          }),          
         )
-    })
+      }),
+      toArray()
     )
   }
 
-  getPokemonImages(pokemonShortData: PokemonShortData): Observable<any> {
+  getPokemonImagesAndID(pokemonShortData: PokemonShortData): Observable<any> {
     return this.httpClient.get<PokemonData>(`${pokemonShortData.url}`).pipe(
-      pluck("sprites", "front_default"),
-      map((pokemon: string)=>{
+      map((pokemon: PokemonData)=>{
         return {
+          id: pokemon.id,
           name: pokemonShortData.name,
           url: pokemonShortData.url,
-          front_default: pokemon
+          front_default: pokemon.sprites.front_default
         }
       })
     )
@@ -72,7 +71,6 @@ export class PokemonsService {
   searchPokemon(): Observable<PokemonShortData[]> {
     return this.httpClient.get<PokemonData>(`${environment.pokemonAPI}pokemon?&limit=1000`).pipe(
       pluck("results"),
-      
     )
   }
 

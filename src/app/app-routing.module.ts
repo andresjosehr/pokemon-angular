@@ -6,7 +6,7 @@ import { PokemonDetailsComponent } from "./components/pages/pokemon-details/poke
 
 const routes: Routes = [
   {path: "home", component: HomeComponent},
-  {path: "pokemon", component: PokemonDetailsComponent},
+  {path: "pokemon/:id", component: PokemonDetailsComponent},
   {path: "**", redirectTo:'home', pathMatch: "full"}
 ];
 
