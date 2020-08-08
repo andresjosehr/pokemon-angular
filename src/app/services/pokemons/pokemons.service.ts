@@ -79,5 +79,34 @@ export class PokemonsService {
     )
   }
 
+  initPokemonSearch(PokemonName: Array<string>){
+
+    return from([PokemonName]).pipe(
+      tap(() => {
+        this.numberOfLoadedPokemons=0;
+        this.pokemonList=[];
+      }),
+      switchMap(pokemonName => {
+        if(!pokemonName[0]){
+          return this.pokemonListOnInit()
+        }
+        return from(pokemonName).pipe(
+          switchMap(resp=> {
+            return this.searchPokemon()
+          }),
+          switchMap(pokemons => {
+           return  from(pokemons).pipe(
+             filter(resp => {
+               return resp.name.indexOf(pokemonName[0]) > -1
+              }),
+              mergeMap(pokemonShortData => this.getPokemonImagesAndID(pokemonShortData))
+           )
+          }),
+          toArray(),
+        )
+      })
+    )
+  }
+
 
 }
