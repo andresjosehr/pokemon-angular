@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+    this.pokemonList = this.pokemonsService.pokemonListOnInit()
   
     this.searchInput = new FormControl()
     
@@ -57,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     )
 
 
-    this.pokemonList = merge(this.pokemonsService.pokemonListOnInit(), searchPokemon$)
+    // this.pokemonList = merge(this.pokemonsService.pokemonListOnInit(), searchPokemon$)
 
 
   }   
