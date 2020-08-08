@@ -42,7 +42,6 @@ export class PokemonsService {
       startWith([]),
       pairwise(),
       map(resp => this.pokemonList = resp[0] ? this.pokemonList.concat(resp[1]) : resp[1] ),
-      
     )
     
   }

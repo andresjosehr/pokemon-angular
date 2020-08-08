@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.pokemonList = this.pokemonsService.pokemonListOnInit()
+    // this.pokemonList = this.pokemonsService.pokemonListOnInit()
   
     this.searchInput = new FormControl()
     
@@ -34,11 +34,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       tap(() => {
         this.pokemonsService.numberOfLoadedPokemons=0;
-        this.pokemonsService.pokemonList=[]
+        this.pokemonsService.pokemonList=[];
       }),
       switchMap(pokemonName => {
         if(!pokemonName){
-          return this.pokemonsService.getPokemons(this.pokemonsService.numberOfLoadedPokemons=0, this.pokemonsService.numberOfPokemonsToLoad=70) 
+          return this.pokemonsService.pokemonListOnInit()
         }
         return from([pokemonName]).pipe(
           switchMap(resp=> {
@@ -51,15 +51,14 @@ export class HomeComponent implements OnInit, OnDestroy {
               }),
               mergeMap(pokemonShortData => this.pokemonsService.getPokemonImagesAndID(pokemonShortData))
            )
-          })
+          }),
+          toArray(),
         )
-      }),
-      toArray(),
-      map(console.log)
+      })
     )
 
 
-    // this.pokemonList = merge(this.pokemonsService.pokemonListOnInit(), searchPokemon$)
+    this.pokemonList = merge(this.pokemonsService.pokemonListOnInit(), searchPokemon$)
 
 
   }   
