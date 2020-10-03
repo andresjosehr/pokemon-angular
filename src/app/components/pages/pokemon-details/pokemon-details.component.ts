@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
+import { Observable } from 'rxjs';
+import { mergeMap, pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pokemon-details',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PokemonDetailsComponent implements OnInit {
 
-  constructor() { }
+  pokemonData$: Observable<number>;
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {}
 
 }

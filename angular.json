@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "codigo-facilito-curso-angular"
+    }
+  },
+  "defaultProject": "codigo-facilito-curso-angular",
+  "cli": {
+    "analytics": "e7e48a52-547c-4f83-99cb-4e55ada064ac"
+  }
 }

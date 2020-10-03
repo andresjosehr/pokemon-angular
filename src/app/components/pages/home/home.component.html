@@ -5,15 +5,15 @@
                 <label for="inpur-search-pokemon" class="text-white">¡Encuentra tu pokemon!</label>
                 <input [formControl]='searchInput' type="email" class="form-control" id="inpur-search-pokemon" aria-describedby="emailHelp" placeholder="Nombre del pokemon">
                 <small id="emailHelp" class="form-text text-muted text-white">Nunca guardamos los datos de pokemons que has buscado </small>
-              </div>
+            </div>
         </div>
-        <div *ngFor='let pokemon of pokemonList | async' class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 my-3 px-4 p-md-1">            
+        <div *ngFor='let pokemon of pokemonList | async' class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 my-3 px-4 p-md-1">
             <div class="card w-100 pokemon-box">
-                    <img *ngIf='pokemon.front_default' class="card-img-top" src="{{pokemon.front_default}}" alt="Card image cap">
+                <img *ngIf='pokemon.front_default' class="card-img-top" src="{{pokemon.front_default}}" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ pokemon.name }}</h5>
                     <!-- <h5 class="card-title text-center">{{ pokemonList | async }}</h5> -->
-                     <a [routerLink]="['/pokemon', pokemon.id]" class="btn btn-primary btn-block">Ver</a>
+                    <!-- <a [routerLink]="['/pokemon', pokemon.id]" class="btn btn-primary btn-block">Ver</a> -->
                 </div>
             </div>
         </div>
