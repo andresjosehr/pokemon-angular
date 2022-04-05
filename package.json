@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-portfolio": "ng build --configuration production",
-    "build-ghpages": "ng build --configuration production --base-href=/pokemon-angular/",
+    "build-ghpages": "ng build --configuration production --base-href=/pokemon-list/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
